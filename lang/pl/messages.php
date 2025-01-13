@@ -22,7 +22,7 @@ return [
     'success_post_deleted' => 'Post został usunięty pomyślnie',
 
     // Banner
-    'blog_banner' => 'Witaj na Blogu! Bardzo miło Cię widzieć, mamy nadzieję, że odnajdziesz tu swoje miejsce i poczujesz się jak w domu.',
+    'blog_banner' => 'Witaj na BLOG-BY! Bardzo miło Cię widzieć, mamy nadzieję, że odnajdziesz tu swoje miejsce i poczujesz się jak w domu.',
     'hobby' => 'Na tej stronie możesz dzielić się swoimi hobby oraz poznawać zainteresowania innych użytkowników.',
     'lorem_ipsum' => 'Istnieje wiele odmian fragmentów Lorem Ipsum, ale większość z nich uległa pewnym zmianom, w wyniku wtrąconego humoru lub losowych słów, które nie wyglądają nawet trochę wiarygodnie. Jeśli zamierzasz użyć fragmentu Lorem Ipsum, musisz mieć pewność, że w środku tekstu nie ma niczego żenującego.',
 

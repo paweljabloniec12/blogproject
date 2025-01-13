@@ -50,7 +50,6 @@
         }
 
         #title_field,
-        textarea,
         input[type="file"] {
             width: 100%;
             padding: 10px;
@@ -64,16 +63,12 @@
         }
 
         input[type="text"]:focus,
-        textarea:focus,
         input[type="file"]:focus {
             border-color: #007bff;
             outline: none;
         }
 
-        textarea {
-            height: 300px;
-            resize: none;
-        }
+
 
         .btn-primary {
             background-color: #007bff;

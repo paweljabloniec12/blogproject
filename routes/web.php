@@ -59,7 +59,7 @@ Route::middleware(Localization::class)
 
     Route::get('/reject_post/{id}', [AdminController::class, 'reject_post']);
 
-    Route::post('/post-message', [ContactFormController::class, 'post_message']);
+    Route::post('/post_message', [ContactFormController::class, 'post_message']);
 
 });
 

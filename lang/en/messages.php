@@ -22,7 +22,7 @@ return [
     'success_post_deleted' => 'Post deleted successfully',
     
     // Banner
-    'blog_banner' => 'Welcome to the Blog! Glad to see you, we hope you find your place.',
+    'blog_banner' => 'Welcome to the BLOG-BY! Glad to see you, we hope you find your place.',
     'hobby' => 'On this site you can share your hobbies and learn about the interests of other users.',
     'lorem_ipsum' => "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.",
 

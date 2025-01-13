@@ -45,10 +45,10 @@
             text-align: center;
             font-size: 18px;
             font-weight: bold;
+            margin-bottom: 20px;
       }
 
-      .services_section_2
-      {
+      .services_section_2 {
             margin-top: 0;
       }
 
@@ -78,5 +78,31 @@
 
       .footer_section .mail_text {
             margin-left: 15px;
+      }
+
+      #read_more {
+            margin-top: 0px;
+      }
+
+      .post-title {
+            font-size: clamp(16px, 2vw, 24px);
+            line-height: 1.2;
+            margin: 10px 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+      }
+
+      /* Dodatkowe breakpointy dla lepszej kontroli */
+      @media (max-width: 768px) {
+            .post-title {
+                  font-size: clamp(24px, 1.8vw, 20px);
+            }
+      }
+
+      @media (max-width: 480px) {
+            .post-title {
+                  font-size: clamp(12px, 1.5vw, 18px);
+            }
       }
 </style>

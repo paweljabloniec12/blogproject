@@ -28,7 +28,7 @@
         .post-container {
             width: 100%;
             max-width: 90vh;
-            margin: 0 auto;
+            margin: 40px auto;
             background-color: #ffffff;
             padding: 30px;
             border-radius: 10px;

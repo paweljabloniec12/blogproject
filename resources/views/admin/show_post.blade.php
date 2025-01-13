@@ -3,7 +3,9 @@
 
 <head>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     @include('admin.css')
 
@@ -17,23 +19,37 @@
         }
 
         .table_deg {
-            border: 1px solid white;
-            width: 80%;
+            border-collapse: collapse;
+            /* Usuwa podwójne linie między komórkami */
+            width: fit-content;
             text-align: center;
-            margin-left: 70px;
-
+            margin: 0 auto;
+            overflow-x: auto;
         }
 
         .th_deg {
-            background-color: skyblue;
+            background-color: rgb(200, 84, 84);
+            color: white;
+            border: 1px solid white;
+            /* Linie pomiędzy nagłówkami */
+        }
+
+        .table_deg td,
+        .table_deg th {
+            border: 1px solid lightgray;
+            /* Linie w komórkach */
+            padding: 10px;
+            /* Dodaje odstęp w komórkach */
         }
 
         .img_deg {
-            height: 100px;
-            width: 150px;
-            padding: 10px;
+            max-height: 100px;
+            width: auto;
+            margin-bottom: 10px;
         }
     </style>
+
+
 </head>
 
 <body>
@@ -79,33 +95,46 @@
                 @foreach ($post as $post)
                     <tr>
                         <td>{{$post->title}}</td>
-                        <td>{{$post->description}}</td>
+                        <td>{{ \Illuminate\Support\Str::limit($post->description, 50, '...') }}</td>
                         <td>{{$post->name}}</td>
-                        <td>{{$post->post_status}}</td>
+                        <td @if($post->post_status === 'active') style="color: green;"
+                        @elseif($post->post_status === 'rejected') style="color: red;"
+                        @elseif($post->post_status === 'pending') style="color: skyblue;" @endif>{{$post->post_status}}</td>
                         <td>{{$post->usertype}}</td>
                         <td>
                             <img class="img_deg" src="postimage/{{$post->image}}">
-
                         </td>
 
                         <td>
-                            <a href="{{url('delete_post', $post->id)}}"
-                            class="btn btn-danger" onclick="confirmation(event)">Delete</a>
+                            <a href="{{url('delete_post', $post->id)}}" class="btn btn-danger"
+                                onclick="confirmation(event)">Delete</a>
                         </td>
 
                         <td>
-                            <a href="{{url('edit_page', $post->id)}}" class="btn btn-success">Edit</a>
+                            <a href="{{url('edit_page', $post->id)}}" class="btn btn-secondary">Edit</a>
                         </td>
 
                         <td>
-                            <a onclick="return confirm('Are you sure to accept this post?')" href="{{url('accept_post',$post->id)}}" class="btn btn-outline-secondary">Accept</a>
+                            @if($post->post_status === 'pending' || $post->post_status === 'rejected')
+                                <a onclick="return confirm('Are you sure to accept this post?')"
+                                    href="{{url('accept_post', $post->id)}}" class="btn btn-success">Accept</a>
+                            @else
+                                <button class="btn btn-success" disabled>Accept</button>
+                            @endif
                         </td>
 
                         <td>
-                            <a onclick="return confirm('Are you sure to reject this post?')" href="{{url('reject_post',$post->id)}}" class="btn btn-primary">Reject</a>
+                            @if($post->post_status !== 'rejected')
+                                <a onclick="return confirm('Are you sure to reject this post?')"
+                                    href="{{url('reject_post', $post->id)}}" class="btn btn-primary">Reject</a>
+                            @else
+                                <button class="btn btn-primary" disabled>Reject</button>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
+
+
 
 
             </table>
@@ -116,11 +145,10 @@
 
         <script type="text/javascript">
 
-            function confirmation(ev)
-            {
+            function confirmation(ev) {
                 ev.preventDefault();
 
-                var urlToRedirect=ev.currentTarget.getAttribute('href');
+                var urlToRedirect = ev.currentTarget.getAttribute('href');
 
                 console.log(urlToRedirect)
 
@@ -133,14 +161,12 @@
                     dangerMode: true,
                 })
 
-                .then((willCancel)=>
-                {
-                    if(willCancel)
-                {
-                    window.location.href=urlToRedirect;
-                }
-                });
-                
+                    .then((willCancel) => {
+                        if (willCancel) {
+                            window.location.href = urlToRedirect;
+                        }
+                    });
+
             }
 
         </script>

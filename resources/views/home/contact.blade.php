@@ -111,6 +111,60 @@
       .send_btn button:hover {
          background-color: #0056b3;
       }
+
+      .send_btn button {
+         background-color: #007bff;
+         color: white;
+         padding: 10px 40px;
+         border: none;
+         border-radius: 5px;
+         font-size: 18px;
+         cursor: pointer;
+         transition: background-color 0.3s;
+         position: relative;
+         min-width: 160px;
+      }
+
+      .send_btn button:hover {
+         background-color: #0056b3;
+      }
+
+      .send_btn button:disabled {
+         background-color: #80b5f1;
+         cursor: not-allowed;
+      }
+
+      .send_btn button .button-text {
+         transition: opacity 0.2s;
+      }
+
+      .send_btn button .spinner {
+         display: none;
+         position: absolute;
+         left: 50%;
+         top: 50%;
+         transform: translate(-50%, -50%);
+         width: 20px;
+         height: 20px;
+         border: 3px solid rgba(255, 255, 255, 0.3);
+         border-radius: 50%;
+         border-top-color: white;
+         animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+         to {
+            transform: translate(-50%, -50%) rotate(360deg);
+         }
+      }
+
+      .send_btn button.loading .button-text {
+         opacity: 0;
+      }
+
+      .send_btn button.loading .spinner {
+         display: block;
+      }
    </style>
 </head>
 
@@ -124,59 +178,62 @@
       <div class="container">
          <div class="contact_container">
             <h1 class="contact_taital">{{__('messages.send_us')}}</h1>
-            
+
             <div class="alert_wrapper">
                @if(session()->has('message'))
-                  <div class="alert alert-success">
-                     {{ session()->get('message') }}
-                  </div>
-               @endif
+               <div class="alert alert-success">
+                 {{ session()->get('message') }}
+               </div>
+            @endif
             </div>
+
             <div class="email_text">
-               <form action="/post-message" method="POST">
+               <form action="/post_message" method="POST" id="contactForm">
                   @csrf
                   <div class="form-group">
-                     <input type="text" class="email-bt @error('name') is-invalid @enderror" 
-                            placeholder="{{__('Your Name')}}" name="name" value="{{ old('name') }}" 
-                            required minlength="2" maxlength="50">
+                     <input type="text" class="email-bt @error('name') is-invalid @enderror"
+                        placeholder="{{__('Your Name')}}" name="name" value="{{ old('name') }}" required minlength="2"
+                        maxlength="50">
                      @error('name')
-                        <div class="error-message">{{ $message }}</div>
-                     @enderror
+                   <div class="error-message">{{ $message }}</div>
+                @enderror
                   </div>
                   <div class="form-group">
-                     <input type="tel" class="email-bt @error('phone') is-invalid @enderror" 
-                            placeholder="{{__('Phone Number')}}" name="phone" value="{{ old('phone') }}" 
-                            required pattern="[0-9\s\-\+\(\)]{9,15}">
+                     <input type="tel" class="email-bt @error('phone') is-invalid @enderror"
+                        placeholder="{{__('Phone Number')}}" name="phone" value="{{ old('phone') }}" required
+                        pattern="[0-9\s\-\+\(\)]{9,15}">
                      @error('phone')
-                        <div class="error-message">{{ $message }}</div>
-                     @enderror
+                   <div class="error-message">{{ $message }}</div>
+                @enderror
                   </div>
                   <div class="form-group">
-                     <input type="email" class="email-bt @error('email') is-invalid @enderror" 
-                            placeholder="{{__('Your Email')}}" name="email" value="{{ old('email') }}" 
-                            required>
+                     <input type="email" class="email-bt @error('email') is-invalid @enderror"
+                        placeholder="{{__('Your Email')}}" name="email" value="{{ old('email') }}" required>
                      @error('email')
-                        <div class="error-message">{{ $message }}</div>
-                     @enderror
+                   <div class="error-message">{{ $message }}</div>
+                @enderror
                   </div>
                   <div class="form-group">
-                     <input type="text" class="email-bt @error('title') is-invalid @enderror" 
-                            placeholder="{{__('Your Title')}}" name="title" value="{{ old('title') }}" 
-                            required minlength="2" maxlength="100">
+                     <input type="text" class="email-bt @error('title') is-invalid @enderror"
+                        placeholder="{{__('Your Title')}}" name="title" value="{{ old('title') }}" required
+                        minlength="2" maxlength="100">
                      @error('title')
-                        <div class="error-message">{{ $message }}</div>
-                     @enderror
+                   <div class="error-message">{{ $message }}</div>
+                @enderror
                   </div>
                   <div class="form-group">
-                     <textarea class="massage-bt @error('message') is-invalid @enderror" 
-                               placeholder="{{__('Your Message')}}" name="message" required 
-                               minlength="10">{{ old('message') }}</textarea>
+                     <textarea class="massage-bt @error('message') is-invalid @enderror"
+                        placeholder="{{__('Your Message')}}" name="message" required
+                        minlength="10">{{ old('message') }}</textarea>
                      @error('message')
-                        <div class="error-message">{{ $message }}</div>
-                     @enderror
+                   <div class="error-message">{{ $message }}</div>
+                @enderror
                   </div>
                   <div class="send_btn">
-                     <button type="submit">{{__('messages.send_message')}}</button>
+                     <button type="submit" id="submitButton">
+                        <span class="button-text">{{__('messages.send_message')}}</span>
+                        <div class="spinner"></div>
+                     </button>
                   </div>
                </form>
             </div>
@@ -184,9 +241,32 @@
       </div>
    </div>
 
+
    <!-- footer section start -->
    @include('home.footer')
    <!-- footer section end -->
 </body>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('contactForm');
+      const submitButton = document.getElementById('submitButton');
+
+      form.addEventListener('submit', function (e) {
+         // Zapobiegamy wielokrotnemu kliknięciu
+         if (submitButton.disabled) {
+            e.preventDefault();
+            return;
+         }
+
+         // Pokazujemy animację i blokujemy przycisk
+         submitButton.classList.add('loading');
+         submitButton.disabled = true;
+
+         // Pozwalamy formularzowi na standardowe wysłanie
+         return true;
+      });
+   });
+</script>
 
 </html>
